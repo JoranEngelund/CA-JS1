@@ -1,4 +1,7 @@
 // Level 1 Process
+const loader = document.querySelector(".loader");
+
+const stopLoader = () => loader.classList.remove("loader");
 
 const options = {
   method: "GET",
@@ -8,27 +11,55 @@ const options = {
   },
 };
 
-const url = "https://free-nba.p.rapidapi.com/stats?page=0&per_page=25";
-const resultContainer = document.querySelector(".results");
+const url = "https://www.balldontlie.io/api/v1/games";
+const resultContainer = document.querySelector(".container");
 
-async function fetchPlayer() {
+async function fetchGamesApi() {
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url);
     const json = await response.json();
     const data = json.data;
-    console.log(data);
-
+    stopLoader();
     for (let i = 0; i < data.length; i++) {
-      resultContainer.innerHTML += `<div class="result">
-                                        <a href="details.html?id=${data[i].id}"><h2>Player: ${data[i].player.first_name} ${data[i].player.last_name}</h2>
-                                        <h3>Position played: ${data[i].player.position}</h3></a>
-                                        <a href="details.html?id=${data[i].team.id}"><h4>Team: ${data[i].team.full_name}</h4></a>
+      if (i === 10) {
+        break;
+      }
+      let regularSeason = "";
+      const difference = data[i].home_team_score - data[i].visitor_team_score;
+      const secondDifference =
+        data[i].visitor_team_score - data[i].home_team_score;
+      if (!data[i].postseason) {
+        regularSeason = "Regular season";
+      }
+
+      if (data[i].home_team_score < data[i].visitor_team_score) {
+        resultContainer.innerHTML += `<div class="card">
+                                        <h2><a href="details.html?id=${data[i].home_team.id}">${data[i].home_team.city} ${data[i].home_team.name}</a> ${data[i].home_team_score}
+                                        : ${data[i].visitor_team_score}
+                                        <a href="details.html?id=${data[i].visitor_team.id}">${data[i].visitor_team.city} ${data[i].visitor_team.name}</a> </h2>
+                                        <h2>Away team wins with ${secondDifference}</h2>
+                                        <h3>Periodes played: ${data[i].period}</h3>
+                                        <h3>Date played: ${data[i].date}</h3>
+                                        <h3>Type of play: ${regularSeason}</h3>
+                                        <h3>NBA Season: ${data[i].season}</h3>
                                     </div>`;
+      } else if (data[i].home_team_score > data[i].visitor_team_score) {
+        resultContainer.innerHTML += `<div class="card">
+                                        <h2><a href="details.html?id=${data[i].home_team.id}">${data[i].home_team.city} ${data[i].home_team.name}</a> ${data[i].home_team_score}
+                                        : ${data[i].visitor_team_score}
+                                        <a href="details.html?id=${data[i].visitor_team.id}">${data[i].visitor_team.city} ${data[i].visitor_team.name}</a> </h2>
+                                        <h2>Home team wins with ${difference}</h2>
+                                        <h3>Periodes played: ${data[i].period}</h3>
+                                        <h3>Date played: ${data[i].date}</h3>
+                                        <h3>Type of play: ${regularSeason}</h3>
+                                        <h3>NBA Season: ${data[i].season}</h3>
+                                    </div>`;
+      }
     }
   } catch (error) {
-    resultContainer.innerHTML = `<div class="error">An error has occurred: ${error}</div>`;
+    resultContainer.innerHTML = `<div class="card error">An error has occurred: ${error}</div>`;
     console.log(error);
   }
 }
 
-fetchPlayer();
+fetchGamesApi();

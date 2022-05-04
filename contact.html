@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="css/style.css" rel="stylesheet" />
+    <title>Contact | Course Assigment JS1</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </header>
+    <main class="container">
+      <form class="contactForm">
+        <div id="validationMessage"></div>
+        <div>
+          <label for="name" required>
+            Name
+            <input type="text" name="name" id="name" />
+          </label>
+          <div class="contactForm-error" id="nameError">
+            You're required to write a name
+          </div>
+        </div>
+        <div>
+          <label for="subject" required>
+            Subject (minimum 10 characters)
+            <input type="text" name="subject" id="subject" />
+          </label>
+          <div class="contactForm-error" id="subjectError">
+            Subject must be least 10 characters
+          </div>
+        </div>
+        <div>
+          <label for="email">
+            Email
+            <input name="email" id="email" />
+          </label>
+          <div class="contactForm-error" id="emailError">
+            Enter a valid email-address
+          </div>
+        </div>
+        <div>
+          <label for="address">
+            Address (minimum 20 characters)
+            <input type="address" name="address" id="address" />
+          </label>
+          <div class="contactForm-error" id="addressError">
+            Address must be least 20 characters
+          </div>
+        </div>
+        <button>Submit</button>
+      </form>
+    </main>
+    <script src="js/form.js"></script>
+  </body>
+</html>
